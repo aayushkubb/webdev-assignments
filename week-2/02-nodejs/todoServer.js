@@ -39,24 +39,68 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
-  const bodyParser = require('body-parser');
-  
-  const app = express();
-  let todos=[];
-  
-  app.use(bodyParser.json());
-  const fs=require('fs');
+const express = require('express');
+const bodyParser = require('body-parser');
 
-  app.post('/todos', (req, res) => {
-    let newTodo = {
-      id: Math.floor(Math.random() * 1000000), // unique random id
-      title: req.body.title,
-      description: req.body.description,
-      completed: req.body.completed
-    };
-    todos.push(newTodo);
-    res.status(201).json(newTodo);
+const app = express();
+let todos=[];
+
+app.use(bodyParser.json());
+const fs=require('fs');
+
+app.post('/todos', (req, res) => {
+  let newTodo = {
+    id: Math.floor(Math.random() * 1000000), // unique random id
+    title: req.body.title,
+    description: req.body.description,
+    completed: req.body.completed
+  };
+  todos.push(newTodo);
+  res.status(201).json(newTodo);
+});
+
+app.get('/todos', (req, res) => {
+  res.status(200).json(todos);
+}
+);
+
+app.get('/todos/:id', (req, res) => {
+const id = parseInt(req.params.id);
+console.log(id);
+const todo = todos.find(todo => todo.id === id);
+if (todo) {
+    res.status(200).json(todo);
+} else {
+    res.status(404).send();
+}
+});
+
+app.put('/todos/:id', (req, res) => {
+const id = parseInt(req.params.id);
+const todo = todos.find(todo => todo.id === id);
+if (todo) {
+    todo.title = req.body.title;
+    todo.description = req.body.description;
+    todo.completed = req.body.completed;
+    res.status(200).json(todo);
+}
+else {
+    res.status(404).send();
+}
+});
+
+app.delete('/todos/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+
+  const index = todos.findIndex(todo => todo.id === id);
+  if (index !== -1) {
+    todos.splice(index, 1);
+    res.status(200).send();
+}
+else {
+    res.status(404).send();
+}
   });
-  app.listen(3000, () => console.log('Todo server listening on port 3000!'));
-  // module.exports = app;
+  
+app.listen(3000, () => console.log('Todo server listening on port 3000!'));
+// module.exports = app;

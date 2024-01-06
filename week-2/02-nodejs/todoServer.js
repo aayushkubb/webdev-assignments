@@ -102,5 +102,5 @@ else {
 }
   });
   
-app.listen(3000, () => console.log('Todo server listening on port 3000!'));
-// module.exports = app;
+// app.listen(3000, () => console.log('Todo server listening on port 3000!'));
+module.exports = app;

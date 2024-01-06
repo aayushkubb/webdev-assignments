@@ -43,7 +43,20 @@
   const bodyParser = require('body-parser');
   
   const app = express();
+  let todos=[];
   
   app.use(bodyParser.json());
-  
-  module.exports = app;
+  const fs=require('fs');
+
+  app.post('/todos', (req, res) => {
+    let newTodo = {
+      id: Math.floor(Math.random() * 1000000), // unique random id
+      title: req.body.title,
+      description: req.body.description,
+      completed: req.body.completed
+    };
+    todos.push(newTodo);
+    res.status(201).json(newTodo);
+  });
+  app.listen(3000, () => console.log('Todo server listening on port 3000!'));
+  // module.exports = app;

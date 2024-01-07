@@ -11,26 +11,35 @@ const app = express();
 // You have been given a numberOfRequestsForUser object to start off with which
 // clears every one second
 
-let numberOfRequestsForUser = {};
+// let numberOfRequestsForUser = {};
+numberOfRequestsForUser=0;
 setInterval(() => {
-    numberOfRequestsForUser = {};
+    numberOfRequestsForUser = 0;
 }, 1000)
 
 app.use((req, res, next) => {
-  const userId = req.headers['user-id'];
-  if (numberOfRequestsForUser[userId]) {
-    numberOfRequestsForUser[userId] ++;
-    if (numberOfRequestsForUser[userId] > 5) {
+  if (numberOfRequestsForUser > 5) {
       res.status(404).json({ msg: 'Too many requests' });
-    }
-    else {
-      next();
-    }
   }
   else {
-    numberOfRequestsForUser[userId] = 1;
+    numberOfRequestsForUser++;
     next();
   }
+  
+  // const userId = req.headers['user-id'];
+  // if (numberOfRequestsForUser[userId]) {
+  //   numberOfRequestsForUser[userId] ++;
+  //   if (numberOfRequestsForUser[userId] > 5) {
+  //     res.status(404).json({ msg: 'Too many requests' });
+  //   }
+  //   else {
+  //     next();
+  //   }
+  // }
+  // else {
+  //   numberOfRequestsForUser[userId] = 1;
+  //   next();
+  // }
 });
 app.get('/user', function(req, res) {
   res.status(200).json({ name: 'john' });
@@ -41,3 +50,4 @@ app.post('/user', function(req, res) {
 });
 
 module.exports = app;
+// app.listen(3002, () => console.log('Rate limiter server listening on port 3002!'));

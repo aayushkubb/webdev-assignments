@@ -16,7 +16,6 @@ function errorHandler(err, req, res, next) {
   res.status(404).json({ msg: 'Not found' });
 }
 
-
 app.get('/user', function(req, res) {
   throw new Error("User not found");
   res.status(200).json({ name: 'john' });

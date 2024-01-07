@@ -16,7 +16,7 @@ function requestCounter(req, res, next) {
 }
 
 app.use(requestCounter);
-app.get('/user', function(req, res) {
+app.get('/user',function(req, res) {
   res.status(200).json({ name: 'john' });
 });
 
@@ -27,5 +27,5 @@ app.post('/user', function(req, res) {
 app.get('/requestCount', function(req, res) {
   res.status(200).json({ requestCount });
 });
-// app.listen(3000);
+// app.listen(3002);
 module.exports = app;
